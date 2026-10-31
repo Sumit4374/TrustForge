@@ -1,0 +1,107 @@
+
+# TrustForge — root .gitignore
+
+# Secrets and local environment (keep templates)
+.env
+.env.*
+!.env.example
+!**/.env.example
+!.env.*.example
+!**/.env.*.example
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.asc
+secrets/
+**/secrets/
+credentials.json
+service-account*.json
+
+# Java / Maven / Spring Boot
+**/target/
+**/build/
+**/.mvn/wrapper/maven-wrapper.jar.lastUpdated
+*.class
+*.jar
+.run
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# Node / React / Vite
+**/node_modules/
+**/dist/
+**/.vite/
+**/.cache/
+**/.turbo/
+**/coverage/
+**/.nyc_output/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Playwright / test artifacts
+**/playwright-report/
+**/test-results/
+**/blob-report/
+**/playwright/.cache/
+**/screenshots/
+**/videos/
+**/traces/
+*.profraw
+*.profdata
+
+# Python scripts and tooling
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local runtime data, exports, backups
+/data/
+/backups/
+/tmp/
+/temp/
+/artifacts/
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
+*.backup
+*.sql.gz
+*.tar.gz
+*.zip
+
+# IDE / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+*.iml
+.project
+.classpath
+.settings/
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.github
+.vscode
+/docs
+
+# Local agent/tool state
+.codex/
+.claude/settings.local.json

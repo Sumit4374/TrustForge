@@ -1,0 +1,53 @@
+name: trustforge
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: trustforge
+      POSTGRES_USER: ${DB_USERNAME:-trustforge}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Run ./start.sh or configure .env}
+    ports: ['127.0.0.1:${POSTGRES_PORT:-5432}:5432']
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$${POSTGRES_USER}" -d trustforge']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  redis-session:
+    image: redis:7.4-alpine
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Run ./start.sh or configure .env}
+    command: ['sh', '-c', 'exec redis-server --requirepass "$$REDIS_PASSWORD" --appendonly yes --maxmemory 128mb --maxmemory-policy noeviction']
+    ports: ['127.0.0.1:${REDIS_PORT:-6379}:6379']
+    volumes: [session-data:/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  redis-cache:
+    image: redis:7.4-alpine
+    environment:
+      REDIS_PASSWORD: ${CACHE_REDIS_PASSWORD:?Run ./start.sh or configure .env}
+    command: ['sh', '-c', 'exec redis-server --requirepass "$$REDIS_PASSWORD" --maxmemory 64mb --maxmemory-policy allkeys-lru']
+    ports: ['127.0.0.1:${CACHE_REDIS_PORT:-6380}:6379']
+    healthcheck:
+      test: ['CMD-SHELL', 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports: ['127.0.0.1:${SMTP_PORT:-1025}:1025', '127.0.0.1:${MAILPIT_HTTP_PORT:-8025}:8025']
+    healthcheck:
+      test: ['CMD', '/mailpit', 'readyz']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+volumes:
+  postgres-data:
+  session-data:

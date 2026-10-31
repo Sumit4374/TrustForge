@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="FileTabCharacter"/>
+  <module name="NewlineAtEndOfFile"/>
+  <module name="TreeWalker">
+    <module name="IllegalImport">
+      <property name="illegalPkgs" value="sun"/>
+      <property name="illegalClasses" value="java.io.ObjectInputStream,java.io.ObjectOutputStream,java.beans.XMLDecoder"/>
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="System\.out\.print|\.printStackTrace\("/>
+      <property name="ignoreComments" value="true"/>
+      <property name="message" value="Use structured logging without sensitive payloads."/>
+    </module>
+  </module>
+</module>

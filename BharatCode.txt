@@ -1,0 +1,39 @@
+TrustForge — AI agent reliability and security evaluation
+
+BharatCode is the primary live model provider. The dedicated Java adapter is:
+server/src/main/java/com/sumit/trustforge/ai/BharatCodeGateway.java
+
+AI operations: scenario generation, model-backed agent decisions in a bounded synthetic tool loop, and supplementary remediation/report recommendations. Deterministic Java code validates model JSON, authorizes tools, records evidence, detects synthetic-canary disclosure and computes pass/fail/inconclusive results. Model explanations never override assertions or change security controls.
+
+Official provider documentation checked again 2026-10-31:
+https://bharatcode.ai/build
+Base URL: https://bharatcode.ai/api/model/v1
+Endpoint: POST /chat/completions
+Default model: qwen-3.8-27b
+GET /models can verify current account model access. deepseek-v4.1-flash requires a suitable plan; configure only a model the account can access.
+
+Server environment: BHARATCODE_API_KEY, BHARATCODE_BASE_URL,
+BHARATCODE_MODEL, BHARATCODE_TIMEOUT. Never use a VITE_ key.
+The key stays on the server. Requests use Bearer authentication, store:false,
+bounded output, deadlines, limited concurrency and daily quotas. The adapter
+accepts only the documented HTTPS provider host/path and refuses redirects.
+Incomplete output, malformed JSON and provider failures cannot count as passing.
+All tools operate on local synthetic fixtures; no arbitrary URL, shell, SQL,
+filesystem or actual email sending is available to model output.
+
+Tests use clearly labeled controlled fake implementations only in test sources;
+there is no production fixture fallback. No live key was provided for this
+implementation session, so live BharatCode inference has NOT been verified.
+Set a valid key in the ignored .env and follow docs/DEMO.md to verify real
+outputs. Model outputs are nondeterministic; reproduce conditions, not bytes.
+
+Hackathon requirements checked at https://bharatcode.ai/hackathon:
+BharatCode.txt is in the repository root. Publication and submission to a public
+GitHub repository remain the project owner's action. No repository URL or
+hackathon submission has been fabricated.
+
+Phase2: AIModelGateway descriptors identify actual provider/model/inference conditions; typed errors, bounded transport attempts, request timestamps, durations and validated token availability are captured as redacted evidence. Missing/invalid usage is unknown, never an invented benchmark count. Structured Chat output is a strict application JSON envelope; native Chat structured-output/tool-call support is not claimed without verification. The fixed endpoint, model and Bearer authentication match the official build page checked2026-10-31. Account-specific limits, resolved model weights and actual live behavior remain unverified.
+
+Opt-in test: TRUSTFORGE_LIVE_BHARATCODE=true scripts/check_live_provider.sh, with a real BHARATCODE_API_KEY supplied in the server environment. It runs BharatCodeLiveIT against real provider decisions and simulated tools with real temporary stores, and writes sanitized .run/phase2/live-provider.json. Default Maven excludes this live test. Preflight actually executed and returned BLOCKED/exit2: no key was available. No live HTTP/model request, provider accuracy, throughput or remediation improvement is claimed.
+
+Guided remediation uses a validated configuration proposal, explicit diff/permission review and approval, immutable version creation, a latest-version conflict check and separate replay. Only AgentInput is supported; AI cannot modify application authentication, infrastructure, schema, secrets or platform policy. Before/after comparisons require compatible provenance and complete matching trial identities. Automated controlled-provider results prove the harness only. Final release decision remains BLOCKED pending genuine provider verification.

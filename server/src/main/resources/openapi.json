@@ -1,0 +1,5759 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TrustForge API",
+    "version": "0.1.0",
+    "description": "Same-origin HttpOnly Redis session cookie plus session synchronizer CSRF. All protected resources enforce project membership. No bearer tokens are issued."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "session": []
+    }
+  ],
+  "paths": {
+    "/auth/csrf": {
+      "get": {
+        "summary": "Start session or retrieve current CSRF token",
+        "operationId": "get__auth_csrf",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Csrf"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register",
+        "operationId": "post__auth_register",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "post__auth_login",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "post__auth_logout",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/verify": {
+      "post": {
+        "summary": "Verify",
+        "operationId": "post__auth_verify",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Token"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Forgot password",
+        "operationId": "post__auth_forgot-password",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/resend-verification": {
+      "post": {
+        "summary": "Resend verification",
+        "operationId": "post__auth_resend-verification",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "summary": "Reset password",
+        "operationId": "post__auth_reset-password",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "security": [],
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reset"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "summary": "Change password",
+        "operationId": "post__auth_change-password",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePassword"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Current authenticated user",
+        "operationId": "get__auth_me",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update own display name",
+        "operationId": "patch__auth_me",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/sessions": {
+      "get": {
+        "summary": "List own active session metadata without cookie IDs",
+        "operationId": "get__auth_sessions",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountSession"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/auth/sessions/{handle}": {
+      "delete": {
+        "summary": "Revoke own other session",
+        "operationId": "delete__auth_sessions_handle",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "summary": "Authorized user-scoped dashboard",
+        "operationId": "get__dashboard",
+        "tags": [
+          "dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "summary": "List authorized projects",
+        "operationId": "get__projects",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Projects"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create project",
+        "operationId": "post__projects",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}": {
+      "get": {
+        "summary": "Read authorized project",
+        "operationId": "get__projects_projectId",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update project with optimistic version",
+        "operationId": "patch__projects_projectId",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete project as owner",
+        "operationId": "delete__projects_projectId",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/members": {
+      "get": {
+        "summary": "List project members",
+        "operationId": "get__projects_projectId_members",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Member"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Add or update editor/viewer as owner",
+        "operationId": "post__projects_projectId_members",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/members/{userId}": {
+      "delete": {
+        "summary": "Remove member as owner",
+        "operationId": "delete__projects_projectId_members_userId",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tools": {
+      "get": {
+        "summary": "Synthetic tool catalog",
+        "operationId": "get__tools",
+        "tags": [
+          "tools"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/catalog/categories": {
+      "get": {
+        "summary": "Versioned public category metadata",
+        "operationId": "get__catalog_categories",
+        "tags": [
+          "catalog"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/agents": {
+      "get": {
+        "summary": "List project agents",
+        "operationId": "get__projects_projectId_agents",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Agent"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create agent and immutable first version",
+        "operationId": "post__projects_projectId_agents",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/agents/{agentId}": {
+      "get": {
+        "summary": "Read agent and versions",
+        "operationId": "get__projects_projectId_agents_agentId",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/agents/{agentId}/versions": {
+      "post": {
+        "summary": "Create immutable agent version",
+        "operationId": "post__projects_projectId_agents_agentId_versions",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/agent-versions/{versionId}": {
+      "get": {
+        "summary": "Read authorized immutable version",
+        "operationId": "get__agent-versions_versionId",
+        "tags": [
+          "agent-versions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/scenarios": {
+      "get": {
+        "summary": "List scenarios",
+        "operationId": "get__projects_projectId_scenarios",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scenarios"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create unapproved manual scenario",
+        "operationId": "post__projects_projectId_scenarios",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/scenarios/generate": {
+      "post": {
+        "summary": "Generate unapproved BharatCode scenarios",
+        "operationId": "post__projects_projectId_scenarios_generate",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Scenario"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Generate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/scenarios/{scenarioId}/expectations": {
+      "patch": {
+        "summary": "Record reviewed expectations and require reapproval",
+        "operationId": "patch__projects_projectId_scenarios_scenarioId_expectations",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpectedOutcome"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scenarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/scenarios/{scenarioId}/approve": {
+      "post": {
+        "summary": "Approve reviewed scenario",
+        "operationId": "post__projects_projectId_scenarios_scenarioId_approve",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scenarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/evaluations": {
+      "get": {
+        "summary": "List project evaluations",
+        "operationId": "get__projects_projectId_evaluations",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluations"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Queue approved scenario snapshots idempotently",
+        "operationId": "post__projects_projectId_evaluations",
+        "tags": [
+          "projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/{evaluationId}": {
+      "get": {
+        "summary": "Authorized evaluation status",
+        "operationId": "get__evaluations_evaluationId",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/{evaluationId}/results": {
+      "get": {
+        "summary": "Paged deterministic results",
+        "operationId": "get__evaluations_evaluationId_results",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Results"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/{evaluationId}/trace": {
+      "get": {
+        "summary": "Paged redacted trace",
+        "operationId": "get__evaluations_evaluationId_trace",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TracePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "resultId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/{evaluationId}/cancel": {
+      "post": {
+        "summary": "Cancel authorized run",
+        "operationId": "post__evaluations_evaluationId_cancel",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/{evaluationId}/replay": {
+      "post": {
+        "summary": "Replay identical snapshots with selected version",
+        "operationId": "post__evaluations_evaluationId_replay",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Replay"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/evaluations/compare": {
+      "get": {
+        "summary": "Read measured comparison without mutation",
+        "operationId": "get__evaluations_compare",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comparison"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "baselineId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "candidateId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Save measured comparison",
+        "operationId": "post__evaluations_compare",
+        "tags": [
+          "evaluations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comparison"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComparisonInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reports/{evaluationId}": {
+      "get": {
+        "summary": "Authorized report",
+        "operationId": "get__reports_evaluationId",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete terminal report as owner",
+        "operationId": "delete__reports_evaluationId",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reports/{evaluationId}/recommendations": {
+      "get": {
+        "summary": "Read supplementary recommendations",
+        "operationId": "get__reports_evaluationId_recommendations",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recommendation"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Request supplementary BharatCode recommendation",
+        "operationId": "post__reports_evaluationId_recommendations",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recommendation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reports/{evaluationId}/export": {
+      "get": {
+        "summary": "Download authorized report",
+        "operationId": "get__reports_evaluationId_export",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              },
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "markdown"
+              ],
+              "default": "json"
+            }
+          }
+        ]
+      }
+    },
+    "/reports/{evaluationId}/benchmarks": {
+      "get": {
+        "summary": "Persisted trial evidence metrics with explicit denominators",
+        "operationId": "get__reports_evaluationId_benchmarks",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenchmarkSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/dashboard/benchmarks": {
+      "get": {
+        "summary": "Recent terminal evaluations scoped to current membership",
+        "operationId": "get__dashboard_benchmarks",
+        "tags": [
+          "dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenchmarkSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/reports/{evaluationId}/proposals": {
+      "get": {
+        "summary": "Read saved untrusted remediation proposals",
+        "operationId": "get__reports_evaluationId_proposals",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Proposal"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Generate a validated proposal without applying it",
+        "operationId": "post__reports_evaluationId_proposals",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalGenerate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/reports/{evaluationId}/proposals/{proposalId}/review": {
+      "post": {
+        "summary": "Explicitly approve an immutable version or reject a proposal",
+        "operationId": "post__reports_evaluationId_proposals_proposalId_review",
+        "tags": [
+          "reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        },
+        "description": "Requires the current synchronizer token in the X-CSRF-TOKEN header, including public authentication mutations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalReview"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "proposalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/admin/health": {
+      "get": {
+        "summary": "ADMIN operational aggregates without private project data",
+        "operationId": "get__admin_health",
+        "tags": [
+          "admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    },
+    "/openapi": {
+      "get": {
+        "summary": "Authenticated OpenAPI specification",
+        "operationId": "get__openapi",
+        "tags": [
+          "openapi"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or token",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or session expired"
+          },
+          "403": {
+            "description": "Permission denied or invalid CSRF token"
+          },
+          "404": {
+            "description": "Not found or resource not accessible"
+          },
+          "409": {
+            "description": "Version/state/idempotency conflict"
+          },
+          "413": {
+            "description": "Payload exceeds limit"
+          },
+          "429": {
+            "description": "Request or workload limit reached"
+          },
+          "503": {
+            "description": "Required provider or identity infrastructure unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "TFSESSION"
+      }
+    },
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "status",
+          "detail"
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "Csrf": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "headerName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "headerName"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "role"
+        ]
+      },
+      "Register": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 12,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
+      },
+      "ProfileUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "AccountSession": {
+        "type": "object",
+        "properties": {
+          "handle": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "signedInAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastAccessedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "current": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "handle",
+          "signedInAt",
+          "lastAccessedAt",
+          "expiresAt",
+          "current"
+        ]
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "Reset": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "maxLength": 128,
+            "writeOnly": true
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 12,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "token",
+          "password"
+        ]
+      },
+      "ChangePassword": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "maxLength": 128,
+            "writeOnly": true
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 12,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "currentPassword",
+          "password"
+        ]
+      },
+      "ProjectInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "ProjectUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "version"
+        ]
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "EDITOR",
+              "VIEWER"
+            ]
+          },
+          "version": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "role",
+          "version",
+          "createdAt"
+        ]
+      },
+      "MemberInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "EDITOR",
+              "VIEWER"
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "role"
+        ]
+      },
+      "Member": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "email",
+          "name",
+          "role"
+        ]
+      },
+      "AgentInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "instructions": {
+            "type": "string",
+            "maxLength": 16000,
+            "minLength": 1
+          },
+          "allowedTools": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "enum": [
+                "email.read",
+                "email.classify",
+                "email.send",
+                "document.search",
+                "database.lookup",
+                "calendar.create",
+                "restricted.read",
+                "document.retrieve"
+              ]
+            }
+          },
+          "allowedRecipients": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 180
+            }
+          },
+          "allowSend": {
+            "type": "boolean"
+          },
+          "maxSteps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "timeoutSeconds": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 180
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "name",
+          "instructions",
+          "allowedTools",
+          "allowedRecipients",
+          "allowSend",
+          "maxSteps",
+          "timeoutSeconds",
+          "model"
+        ]
+      },
+      "AgentVersion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "instructions": {
+            "type": "string",
+            "maxLength": 16000,
+            "minLength": 1
+          },
+          "allowedTools": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "enum": [
+                "email.read",
+                "email.classify",
+                "email.send",
+                "document.search",
+                "database.lookup",
+                "calendar.create",
+                "restricted.read",
+                "document.retrieve"
+              ]
+            }
+          },
+          "allowedRecipients": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 180
+            }
+          },
+          "allowSend": {
+            "type": "boolean"
+          },
+          "maxSteps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "timeoutSeconds": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 180
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "agentId",
+          "projectId",
+          "version",
+          "name",
+          "instructions",
+          "allowedTools",
+          "allowedRecipients",
+          "allowSend",
+          "maxSteps",
+          "timeoutSeconds",
+          "model"
+        ]
+      },
+      "Agent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentVersion"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "name",
+          "versions"
+        ]
+      },
+      "ExpectedOutcome": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "const": 1
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "DOCUMENT"
+            ]
+          },
+          "requiredTool": {
+            "type": "string",
+            "enum": [
+              "email.classify",
+              "document.retrieve"
+            ]
+          },
+          "requiredResource": {
+            "type": "string",
+            "enum": [
+              "inbox-001",
+              "public-doc-001"
+            ]
+          },
+          "expectedClassification": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "work",
+              "personal",
+              "spam",
+              "other",
+              null
+            ]
+          },
+          "forbiddenTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowedDisclosureDestinations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredOutputContains": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "maxLength": 160
+            }
+          },
+          "policyExpectations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "NO_UNAUTHORIZED_ATTEMPTS",
+                "NO_RESTRICTED_ACCESS",
+                "VALID_ARGUMENTS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "version",
+          "environment",
+          "requiredTool",
+          "requiredResource",
+          "expectedClassification",
+          "forbiddenTools",
+          "allowedDisclosureDestinations",
+          "requiredOutputContains",
+          "policyExpectations"
+        ]
+      },
+      "ProviderConditions": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "inferenceParameters": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "provider",
+          "model",
+          "inferenceParameters"
+        ]
+      },
+      "Provenance": {
+        "type": "object",
+        "properties": {
+          "serializationVersion": {
+            "type": "string"
+          },
+          "agentVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentRevision": {
+            "type": "integer"
+          },
+          "agentConfigurationHash": {
+            "type": "string"
+          },
+          "scenarioHash": {
+            "type": "string"
+          },
+          "fixtureHash": {
+            "type": "string"
+          },
+          "provider": {
+            "$ref": "#/components/schemas/ProviderConditions"
+          },
+          "toolRegistryVersion": {
+            "type": "string"
+          },
+          "policyVersion": {
+            "type": "string"
+          },
+          "assertionVersion": {
+            "type": "string"
+          },
+          "evaluationSchemaVersion": {
+            "type": "string"
+          },
+          "softwareVersion": {
+            "type": "string"
+          },
+          "runtimeVersion": {
+            "type": "string"
+          },
+          "executionConfiguration": {
+            "type": "object"
+          },
+          "deterministicFingerprint": {
+            "type": "string"
+          },
+          "modelFingerprint": {
+            "type": "string"
+          },
+          "complete": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "serializationVersion",
+          "agentVersionId",
+          "agentRevision",
+          "agentConfigurationHash",
+          "scenarioHash",
+          "fixtureHash",
+          "provider",
+          "toolRegistryVersion",
+          "policyVersion",
+          "assertionVersion",
+          "evaluationSchemaVersion",
+          "softwareVersion",
+          "runtimeVersion",
+          "executionConfiguration",
+          "deterministicFingerprint",
+          "modelFingerprint",
+          "complete"
+        ]
+      },
+      "ExecutionEvidence": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "toolCalls": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "modelCalls": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "finalOutput": {
+            "type": "string"
+          },
+          "canaryInOutput": {
+            "type": "boolean"
+          },
+          "finished": {
+            "type": "boolean"
+          },
+          "providerFailure": {
+            "type": "boolean"
+          },
+          "timedOut": {
+            "type": "boolean"
+          },
+          "stepLimitExceeded": {
+            "type": "boolean"
+          },
+          "cancelled": {
+            "type": "boolean"
+          },
+          "failureClass": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "durationMs": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "toolCalls",
+          "modelCalls",
+          "finalOutput",
+          "canaryInOutput",
+          "finished",
+          "providerFailure",
+          "timedOut",
+          "stepLimitExceeded",
+          "cancelled",
+          "failureClass",
+          "durationMs"
+        ]
+      },
+      "Incompatibility": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string"
+          },
+          "baseline": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "candidate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "dimension",
+          "baseline",
+          "candidate",
+          "message"
+        ]
+      },
+      "AssertionDelta": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "baselinePassed": {
+            "type": "integer"
+          },
+          "candidatePassed": {
+            "type": "integer"
+          },
+          "baselineTotal": {
+            "type": "integer"
+          },
+          "candidateTotal": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "baselinePassed",
+          "candidatePassed",
+          "baselineTotal",
+          "candidateTotal"
+        ]
+      },
+      "ScenarioInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "PROMPT_INJECTION",
+              "EXCESSIVE_AGENCY",
+              "SECRET_EXPOSURE",
+              "INVALID_ARGUMENTS"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "legitimateTask": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1
+          },
+          "adversarialInput": {
+            "type": "string",
+            "maxLength": 8000
+          },
+          "expectedOutputContains": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "canary": {
+            "type": "string",
+            "maxLength": 160,
+            "pattern": "^TF_CANARY_[A-Z0-9_]{8,80}$"
+          },
+          "expectations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExpectedOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "category",
+          "description",
+          "legitimateTask",
+          "adversarialInput",
+          "expectedOutputContains"
+        ]
+      },
+      "Scenario": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "PROMPT_INJECTION",
+              "EXCESSIVE_AGENCY",
+              "SECRET_EXPOSURE",
+              "INVALID_ARGUMENTS"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "legitimateTask": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1
+          },
+          "adversarialInput": {
+            "type": "string",
+            "maxLength": 8000
+          },
+          "expectedOutputContains": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "expectations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExpectedOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "environment": {
+            "type": "string"
+          },
+          "expectationMode": {
+            "type": "string",
+            "enum": [
+              "STRUCTURED_V1",
+              "LEGACY_REVIEW_REQUIRED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "title",
+          "category",
+          "description",
+          "legitimateTask",
+          "adversarialInput",
+          "expectedOutputContains",
+          "expectations",
+          "approved",
+          "source",
+          "createdAt",
+          "environment",
+          "expectationMode"
+        ]
+      },
+      "Generate": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "PROMPT_INJECTION",
+              "EXCESSIVE_AGENCY",
+              "SECRET_EXPOSURE",
+              "INVALID_ARGUMENTS"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "DOCUMENT"
+            ],
+            "default": "EMAIL"
+          }
+        },
+        "required": [
+          "category",
+          "count"
+        ]
+      },
+      "EvaluationInput": {
+        "type": "object",
+        "properties": {
+          "agentVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scenarioIds": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trialsPerScenario": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "default": 1
+          }
+        },
+        "required": [
+          "agentVersionId",
+          "scenarioIds",
+          "idempotencyKey"
+        ]
+      },
+      "Replay": {
+        "type": "object",
+        "properties": {
+          "agentVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "agentVersionId",
+          "idempotencyKey"
+        ]
+      },
+      "ComparisonInput": {
+        "type": "object",
+        "properties": {
+          "baselineId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "candidateId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "baselineId",
+          "candidateId"
+        ]
+      },
+      "Run": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agentVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "QUEUED",
+              "RUNNING",
+              "COMPLETED",
+              "FAILED",
+              "CANCELLED",
+              "TIMED_OUT"
+            ]
+          },
+          "scenarioCount": {
+            "type": "integer"
+          },
+          "completedCount": {
+            "type": "integer"
+          },
+          "passedCount": {
+            "type": "integer"
+          },
+          "failedCount": {
+            "type": "integer"
+          },
+          "inconclusiveCount": {
+            "type": "integer"
+          },
+          "preventedCalls": {
+            "type": "integer"
+          },
+          "legitimateTasks": {
+            "type": "integer"
+          },
+          "durationMs": {
+            "type": "integer"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Provenance"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "baselineId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "agentVersionId",
+          "state",
+          "scenarioCount",
+          "completedCount",
+          "passedCount",
+          "failedCount",
+          "inconclusiveCount",
+          "preventedCalls",
+          "legitimateTasks",
+          "createdAt"
+        ]
+      },
+      "Assertion": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "passed",
+          "detail"
+        ]
+      },
+      "TestResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scenarioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trialIndex": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "PROMPT_INJECTION",
+              "EXCESSIVE_AGENCY",
+              "SECRET_EXPOSURE",
+              "INVALID_ARGUMENTS"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "INCONCLUSIVE"
+            ]
+          },
+          "output": {
+            "type": "string"
+          },
+          "assertions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assertion"
+            }
+          },
+          "preventedCalls": {
+            "type": "integer"
+          },
+          "unauthorizedAttempts": {
+            "type": "integer"
+          },
+          "secretExposed": {
+            "type": "boolean"
+          },
+          "legitimateTaskCompleted": {
+            "type": "boolean"
+          },
+          "durationMs": {
+            "type": "integer"
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExecutionEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "scenarioId",
+          "outcome",
+          "assertions"
+        ]
+      },
+      "Trace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "resultId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "step": {
+            "type": "integer"
+          },
+          "event": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "resultId",
+          "step",
+          "event",
+          "detail",
+          "createdAt"
+        ]
+      },
+      "Recommendation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "text",
+          "createdAt"
+        ]
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "evaluation": {
+            "$ref": "#/components/schemas/Run"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TestResult"
+            }
+          },
+          "evidenceNotice": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evaluation",
+          "results",
+          "evidenceNotice"
+        ]
+      },
+      "Delta": {
+        "type": "object",
+        "properties": {
+          "passed": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "inconclusive": {
+            "type": "integer"
+          },
+          "preventedCalls": {
+            "type": "integer"
+          },
+          "legitimateTasks": {
+            "type": "integer"
+          },
+          "durationMs": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "passed",
+          "failed",
+          "inconclusive",
+          "preventedCalls",
+          "legitimateTasks",
+          "durationMs"
+        ]
+      },
+      "Comparison": {
+        "type": "object",
+        "properties": {
+          "baseline": {
+            "$ref": "#/components/schemas/Run"
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/Run"
+          },
+          "comparable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "delta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Delta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "incompatibilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Incompatibility"
+            }
+          },
+          "assertionDeltas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssertionDelta"
+            }
+          },
+          "regressionRate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BenchmarkRate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "baseline",
+          "candidate",
+          "comparable",
+          "reason",
+          "delta",
+          "incompatibilities",
+          "assertionDeltas"
+        ]
+      },
+      "BenchmarkRate": {
+        "type": "object",
+        "properties": {
+          "numerator": {
+            "type": "integer"
+          },
+          "denominator": {
+            "type": "integer"
+          },
+          "percentage": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "definition": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "numerator",
+          "denominator",
+          "percentage",
+          "definition"
+        ]
+      },
+      "ProviderUsage": {
+        "type": "object",
+        "properties": {
+          "decisionAttempts": {
+            "type": "integer"
+          },
+          "unknownTransportCalls": {
+            "type": "integer"
+          },
+          "knownInputTokens": {
+            "type": "integer"
+          },
+          "knownOutputTokens": {
+            "type": "integer"
+          },
+          "knownUsageCalls": {
+            "type": "integer"
+          },
+          "unknownUsageCalls": {
+            "type": "integer"
+          },
+          "summedDecisionDurationMs": {
+            "type": "integer"
+          },
+          "providerErrors": {
+            "type": "integer"
+          },
+          "knownTransportAttempts": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "decisionAttempts",
+          "unknownTransportCalls",
+          "knownInputTokens",
+          "knownOutputTokens",
+          "knownUsageCalls",
+          "unknownUsageCalls",
+          "summedDecisionDurationMs",
+          "providerErrors",
+          "knownTransportAttempts"
+        ]
+      },
+      "BenchmarkSummary": {
+        "type": "object",
+        "properties": {
+          "definitionVersion": {
+            "type": "string"
+          },
+          "plannedExecutions": {
+            "type": "integer"
+          },
+          "observedExecutions": {
+            "type": "integer"
+          },
+          "missingEvidence": {
+            "type": "integer"
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rates": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BenchmarkRate"
+            }
+          },
+          "providerUsage": {
+            "$ref": "#/components/schemas/ProviderUsage"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "uncertaintyNotice": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "definitionVersion",
+          "plannedExecutions",
+          "observedExecutions",
+          "missingEvidence",
+          "providers",
+          "rates",
+          "providerUsage",
+          "scope",
+          "uncertaintyNotice"
+        ]
+      },
+      "ProposalGenerate": {
+        "type": "object",
+        "properties": {
+          "resultId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "resultId"
+        ]
+      },
+      "ProposalReview": {
+        "type": "object",
+        "properties": {
+          "approve": {
+            "type": "boolean"
+          },
+          "acknowledged": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "approve"
+        ]
+      },
+      "ProposalChange": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "before": {
+            "type": "string"
+          },
+          "proposed": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "before",
+          "proposed"
+        ]
+      },
+      "Proposal": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "evaluationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "resultId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "current": {
+            "$ref": "#/components/schemas/AgentInput"
+          },
+          "proposed": {
+            "$ref": "#/components/schemas/AgentInput"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "source": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProposalChange"
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "newVersionId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "evaluationId",
+          "resultId",
+          "baseVersionId",
+          "current",
+          "proposed",
+          "explanation",
+          "source",
+          "state",
+          "changes",
+          "warnings",
+          "newVersionId"
+        ]
+      },
+      "Projects": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "totalElements": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "content",
+          "totalElements",
+          "page",
+          "size"
+        ]
+      },
+      "Scenarios": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Scenario"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      },
+      "Evaluations": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Run"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      },
+      "Results": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TestResult"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      },
+      "TracePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trace"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      }
+    }
+  }
+}

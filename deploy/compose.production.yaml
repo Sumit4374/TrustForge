@@ -1,0 +1,62 @@
+# Reference only: requires an HTTPS ingress and private managed TLS stores.
+# Exactly one worker-owning server. No provider or datastore key is built into an image.
+services:
+  server:
+    # Compose refuses scaling a named container; cross-host singleton ownership is an operator requirement.
+    container_name: trustforge-worker
+    build: ../server
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp:rw,noexec,nosuid,size=128m]
+    mem_limit: 1g
+    cpus: 2
+    environment:
+      PRODUCTION: 'true'
+      APP_SECURE_COOKIES: 'true'
+      APP_BASE_URL: ${APP_BASE_URL:?HTTPS public URL required}
+      DB_URL: ${DB_URL:?Private TLS JDBC URL required}
+      DB_USERNAME: ${DB_USERNAME:?Database user required}
+      DB_PASSWORD: ${DB_PASSWORD:?Runtime secret required}
+      REDIS_HOST: ${REDIS_HOST:?Private session Redis host required}
+      REDIS_PORT: ${REDIS_PORT:-6380}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Runtime session secret required}
+      REDIS_TLS: 'true'
+      CACHE_REDIS_HOST: ${CACHE_REDIS_HOST:?Separate private cache Redis required}
+      CACHE_REDIS_PORT: ${CACHE_REDIS_PORT:-6380}
+      CACHE_REDIS_PASSWORD: ${CACHE_REDIS_PASSWORD:?Runtime cache secret required}
+      CACHE_REDIS_TLS: 'true'
+      SMTP_HOST: ${SMTP_HOST:?Authenticated SMTP host required}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:?SMTP identity required}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:?Runtime SMTP secret required}
+      SMTP_AUTH: 'true'
+      SMTP_TLS: 'true'
+      SMTP_FROM: ${SMTP_FROM:?Verified sender required}
+      BHARATCODE_API_KEY: ${BHARATCODE_API_KEY:?Runtime provider secret required}
+      BHARATCODE_MODEL: ${BHARATCODE_MODEL:-qwen-3.8-27b}
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://127.0.0.1:8080/actuator/health/readiness]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+  client:
+    build: ../client
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp:rw,noexec,nosuid,size=64m]
+    mem_limit: 128m
+    cpus: 1
+    depends_on:
+      server:
+        condition: service_healthy
+    # An external TLS ingress connects to client:8080 on this private network.
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://127.0.0.1:8080/]
+      interval: 15s
+      timeout: 5s
+      retries: 3
